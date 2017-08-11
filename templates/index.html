@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}
+    index
+{% endblock %}
+{% block center %}
+<div class="jumbotron">
+    <h1>欢迎来到 “TMS 运维管理系统”</h1>
+    <div class="bs-example" data-example-id="hoverable-table">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>服务编号</th>
+          <th>服务名称</th>
+          <th>服务路径</th>
+          <th>服务状态</th>
+          <th>点击启动</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for foo in service %}
+        <tr>
+          <th scope="row">{{ foo.service_id }}</th>
+          <td>{{ foo.service_name }}</td>
+          <td>{{ foo.service_address }}</td>
+          <td>{{ foo.get_service_status_display }}</td>
+          <td>
+        <a href="#" class="btn  btn-lg  {% ifequal foo.get_service_status_display '未启动' %}btn-info{% else %}btn-danger{% endifequal %}" >
+          <span class="glyphicon glyphicon-off"></span>
+            点击{% ifequal foo.get_service_status_display '未启动' %}启动{% else %}停止{% endifequal %}
+        </a>
+          </td>
+        </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    </div>
+        <form  action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+            <input type="text" name="script">
+                    <input type="submit" value="执行命令">
+    </form>
+             <textarea style="margin: 0px; width: 1250px; height: 450px;">{{ s }}</textarea>
+{% endblock %}
+{% block js %}
+<script>
+    $('.btn').on('click', function(){
+    send_message($(this), {% for foo in service %}{{ foo.service_id }}{% endfor %}
+    , {% for foo in service %}{{ foo.service_status }}{% endfor %});
+});
+</script>
+    <script>
+    function send_message(current_elem, fav_id, fav_type){
+    $.ajax({
+        cache: false,
+        type: "POST",
+        url:"{% url 'index_send ' %}",
+        data:{'fav_id':fav_id, 'fav_type':fav_type},
+        dataType:'JSON',
+        async: true,
+        beforeSend:function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(data) {
+            if(data.status == 'fail'){
+                if(data.msg == '用户未登录'){
+                    alert('用户未登录')
+                    window.location.href="/login/";
+                }else{
+                    console.log(data);
+                    alert(data.msg)
+                }
+
+            }else if(data.status == 'success'){
+                console.log(data);
+                current_elem.text(data.msg)
+            }
+        },
+    });
+}
+    </script>
+
+{% endblock %}
