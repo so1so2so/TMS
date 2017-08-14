@@ -19,5 +19,5 @@ from tmsserver.views import Head_ListView,Send_message
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^index/$', Head_ListView.as_view(), name='index'),
-    url(r'^index_send/(?P<service_id>\d+)/$', Send_message.as_view(), name='index_send'),
+    url(r'^index_send/(\d+)', Send_message.as_view(), name='index_send'),
 ]

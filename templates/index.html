@@ -18,15 +18,15 @@
       </thead>
       <tbody>
           {% for foo in service %}
-        <tr>
+        <tr  id ={{ foo.service_id }}>
           <th scope="row">{{ foo.service_id }}</th>
           <td>{{ foo.service_name }}</td>
           <td>{{ foo.service_address }}</td>
           <td>{{ foo.get_service_status_display }}</td>
           <td>
-        <a href="#" class="btn  btn-lg  {% ifequal foo.get_service_status_display '未启动' %}btn-info{% else %}btn-danger{% endifequal %}" >
+        <a href="/index_send/{{ foo.service_id }}" class="btn  btn-lg  {% ifequal foo.get_service_status_display '未启动' %}btn-info{% else %}btn-danger{% endifequal %}"   my_id ={{ foo.service_id }}">
           <span class="glyphicon glyphicon-off"></span>
-            点击{% ifequal foo.get_service_status_display '未启动' %}启动{% else %}停止{% endifequal %}
+            {% ifequal foo.get_service_status_display '未启动' %}点击启动{% else %}点击停止{% endifequal %}
         </a>
           </td>
         </tr>
@@ -43,41 +43,27 @@
              <textarea style="margin: 0px; width: 1250px; height: 450px;">{{ s }}</textarea>
 {% endblock %}
 {% block js %}
-<script>
-    $('.btn').on('click', function(){
-    send_message($(this), {% for foo in service %}{{ foo.service_id }}{% endfor %}
-    , {% for foo in service %}{{ foo.service_status }}{% endfor %});
-});
-</script>
     <script>
-    function send_message(current_elem, fav_id, fav_type){
-    $.ajax({
-        cache: false,
-        type: "POST",
-        url:"{% url 'index_send ' %}",
-        data:{'fav_id':fav_id, 'fav_type':fav_type},
-        dataType:'JSON',
-        async: true,
-        beforeSend:function(xhr, settings){
-            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-        },
-        success: function(data) {
-            if(data.status == 'fail'){
-                if(data.msg == '用户未登录'){
-                    alert('用户未登录')
-                    window.location.href="/login/";
-                }else{
-                    console.log(data);
-                    alert(data.msg)
-                }
 
-            }else if(data.status == 'success'){
-                console.log(data);
-                current_elem.text(data.msg)
-            }
-        },
-    });
+$(".btn").click(function () {
+     var tds =$(this).attr('my_id')
+                console.log(tds)
+    </script>
+    <script>
+        function add_start(tds){
+        $.ajax({
+                cache: false,
+                type: "POST",
+                url:"{% url 'index_send' 100 %}",
+                async: true,
+                dataType:'JSON',
+                beforeSend:function(xhr, settings){
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            },
+                 success: function(data) {
+                    console.log(tds)
+                 }
+        })
 }
     </script>
-
 {% endblock %}

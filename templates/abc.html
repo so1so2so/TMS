@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}
+    index
+{% endblock %}
+{% block center %}
+            <div class="jumbotron">
+                <h1>{{ service.service_name }}</h1>
+                <p> {{ service.get_service_status_display }}</p>
+                <p>执行启动命令{{ service.service_command }}</p>
+                <p><a class="btn btn-primary btn-lg">Learn more</a></p>
+              </div>
+{% endblock %}

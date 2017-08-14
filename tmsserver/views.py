@@ -6,8 +6,13 @@ from django.views.generic.base import View
 from tmsserver.models import Service
 from  long_ssh import Long_ssh
 import sys
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
+hostname = '192.168.137.113'
+username = 'root'
+password = '123456'
+
 
 class Head_ListView(View):
     def get(self, request):
@@ -18,18 +23,25 @@ class Head_ListView(View):
         )
 
     def post(self, request):
-        hostname='192.168.137.113'
-        username='root'
-        password='123456'
-        script =request.POST.get(u'script')
-        conn = Long_ssh(hostname,username,password,script)
+        script = request.POST.get(u'script')
+        conn = Long_ssh(hostname, username, password, script)
         resu = conn.connection()
-        return render(
-            request, 'index.html',
-            {'s': resu}
-        )
+        return render(request, 'index.html',
+                      {'s': resu, }
+                      )
+
 
 class Send_message(View):
-        def post(self,request,service_id):
+    def get(self, request, service_id):
+        print service_id
+        service = Service.objects.get(service_id=service_id)
+        return render(request, 'abc.html',
+                      {
+                       'service':service,}
+                      )
 
-
+    def post(self, request, service_id):
+        service_id_send = 100
+        return render(request, 'index.html',
+                      {'service_id_send': service_id_send}
+                      )
