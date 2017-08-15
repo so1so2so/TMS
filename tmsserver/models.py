@@ -14,12 +14,13 @@ class Service(models.Model):
         (2, '未启动')
     )
     service_status = models.IntegerField(choices=status, default=1, verbose_name='服务状态')
-    service_address = models.CharField(max_length=128,default=1,verbose_name='服务地址')
-    service_script = models.CharField(max_length=128,default=1,verbose_name='脚本名称')
-    service_command = models.CharField(max_length=128,default=1,verbose_name='启动命令')
+    service_address = models.CharField(max_length=128, default=1, verbose_name='服务地址')
+    service_script = models.CharField(max_length=128, default=1, verbose_name='脚本名称')
+    service_command = models.CharField(max_length=128, default=1, verbose_name='启动命令')
+    service_grep = models.CharField(max_length=128, default=1, verbose_name='model',null=True)
     class Meta:
         verbose_name = u"服务"
         verbose_name_plural = verbose_name
+
     def __unicode__(self):
         return self.service_name
-

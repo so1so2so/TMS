@@ -25,23 +25,37 @@ class Head_ListView(View):
     def post(self, request):
         script = request.POST.get(u'script')
         conn = Long_ssh(hostname, username, password, script)
-        resu = conn.connection()
+        retuer, error = conn.connection()
+        if error:
+            result = error
+        else:
+            result = retuer
         return render(request, 'index.html',
-                      {'s': resu, }
-                      )
+                      {'result': result,
+                       })
 
 
 class Send_message(View):
     def get(self, request, service_id):
-        print service_id
         service = Service.objects.get(service_id=service_id)
-        return render(request, 'abc.html',
-                      {
-                       'service':service,}
-                      )
+        address = service.service_address
+        script = service.service_command
+        end_script = 'cd' + ' ' + address + '&&' + ' ' + script
+        status = service.service_script
+        end_status = 'ps aux|grep -v grep|grep'+' '+status
+        if end_status:
+            print end_status
+            conn = Long_ssh(hostname, username, password, end_status)
+        # conn2 = Long_ssh(hostname, username, password, end_script)
+            retuer, error = conn.connection()
+            if error:
+                result = error
+            else:
+                result = retuer
+            print result
+            return render(request, 'abc.html',
+                          {'service': service,
+                           'end_script': end_script,
+                           'result': result,
+                           })
 
-    def post(self, request, service_id):
-        service_id_send = 100
-        return render(request, 'index.html',
-                      {'service_id_send': service_id_send}
-                      )

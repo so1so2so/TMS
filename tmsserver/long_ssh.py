@@ -18,6 +18,6 @@ class Long_ssh(object):
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(hostname=self.hostname, username=self.username, password=self.password)
         stdin, stdout, stderr = ssh.exec_command(self.script)
-        result= stdout.read()
+        result,error= stdout.read(),stderr.read()
         ssh.close()
-        return result
+        return result,error

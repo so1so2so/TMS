@@ -6,7 +6,7 @@
             <div class="jumbotron">
                 <h1>{{ service.service_name }}</h1>
                 <p> {{ service.get_service_status_display }}</p>
-                <p>执行启动命令{{ service.service_command }}</p>
-                <p><a class="btn btn-primary btn-lg">Learn more</a></p>
-              </div>
+                <p>执行启动命令{{ end_script }}</p>
+            </div>
+    <div style="width: 500px;height: 500px">{{ result }}</div>
 {% endblock %}
