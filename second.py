@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # _*_ coding:utf-8 _*_
-#!/usr/bin/env python
-# _*_ coding:utf-8 _*_
+
 import cx_Oracle, pymysql.cursors
 
 # oracle_conn =cx_Oracle.connect('system/oracle@192.168.1.111:1521/xe')

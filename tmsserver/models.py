@@ -17,7 +17,10 @@ class Service(models.Model):
     service_address = models.CharField(max_length=128, default=1, verbose_name='服务地址')
     service_script = models.CharField(max_length=128, default=1, verbose_name='脚本名称')
     service_command = models.CharField(max_length=128, default=1, verbose_name='启动命令')
-    service_grep = models.CharField(max_length=128, default=1, verbose_name='model',null=True)
+    service_test = models.EmailField(max_length=128, blank=True, verbose_name='e-mail',null=True)
+    service_test2 = models.DateTimeField(max_length=128, blank=True, verbose_name='添加时间')
+    service_grep = models.CharField(max_length=128, default=1, verbose_name='服务过滤条件',null=True,blank=True)
+
     class Meta:
         verbose_name = u"服务"
         verbose_name_plural = verbose_name

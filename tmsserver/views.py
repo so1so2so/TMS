@@ -4,23 +4,23 @@ from django.shortcuts import render
 from django.views.generic.base import View
 # Create your views here.
 from tmsserver.models import Service
-from  long_ssh import Long_ssh
-import sys
-
-reload(sys)
-sys.setdefaultencoding('utf-8')
-hostname = '192.168.137.113'
+from long_ssh import Long_ssh
+# import sys
+#
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
+hostname = '192.168.1.11'
 username = 'root'
 password = '123456'
 
 
 class Head_ListView(View):
+
     def get(self, request):
         service = Service.objects.all()
-        return render(
-            request, 'index.html',
-            {'service': service}
-        )
+        # abc = request.META
+        return render(request, 'index.html',
+            {'service': service,})
 
     def post(self, request):
         script = request.POST.get(u'script')
@@ -42,6 +42,7 @@ class Send_message(View):
         script = service.service_command
         end_script = 'cd' + ' ' + address + '&&' + ' ' + script
         status = service.service_script
+        # print self.__name__
         end_status = 'ps aux|grep -v grep|grep'+' '+status
         if end_status:
             print end_status
