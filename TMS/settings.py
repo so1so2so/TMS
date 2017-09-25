@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# _*_ coding:utf-8 _*_
 """
 Django settings for TMS project.
 
@@ -35,11 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tmsserver',
-     # 'jet.dashboard',
-    # 'jet',
     'django_admin_bootstrapped',
     'django.contrib.admin',
     'apptms2',
+    'DjangoUeditor',
 ]
 
 # Application definition
@@ -125,7 +126,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+# STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+# 公共的 static 文件，比如 jquery.js 可以放这里，这里面的文件夹不能包含 STATIC_ROOT
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "common_static"),
+)
 
+# upload folder
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

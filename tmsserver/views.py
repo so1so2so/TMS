@@ -3,7 +3,8 @@
 from django.shortcuts import render
 from django.views.generic.base import View
 # Create your views here.
-from tmsserver.models import Service
+from tmsserver.models import Service,Blog
+from  DjangoUeditor.widgets import UEditorWidget
 from long_ssh import Long_ssh
 # import sys
 #
@@ -18,9 +19,11 @@ class Head_ListView(View):
 
     def get(self, request):
         service = Service.objects.all()
+        form = Blog()
         # abc = request.META
         return render(request, 'index.html',
-            {'service': service,})
+            {'service': service,
+            "form":form})
 
     def post(self, request):
         script = request.POST.get(u'script')

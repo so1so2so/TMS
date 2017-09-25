@@ -1,5 +1,5 @@
 from django.contrib import admin
-from  tmsserver.models import Service
+from  tmsserver.models import Service,Blog
 
 
 # Register your models here.
@@ -17,4 +17,5 @@ class AuthorAdmin(admin.ModelAdmin):
     # fields = ('service_address','service_name',)
     # filter_horizontal = ('service_address',)
 admin.site.register(Service, AuthorAdmin)
+# admin.site.register(Blog)
 # admin.site.register(Service)
